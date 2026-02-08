@@ -1,0 +1,952 @@
+
+        /* ================================================================== */
+        /* CSS MESTRE - ROYAL DARK (COMPLETO) */
+        /* ================================================================== */
+        /* Botão Flutuante para voltar ao Admin (Modo Deus) */
+.admin-return-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff0000;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    z-index: 99999;
+    cursor: pointer;
+    border: 2px solid white;
+    animation: pulse 2s infinite;
+    display: none; /* Escondido por padrão */
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+        :root {
+            --bg-body: #050505; --bg-sidebar: #0a0a0c; --bg-card: #141418; --bg-input: #1f1f25;
+            --primary: #ff9100; --secondary: #bc13fe; --success: #00e054; --danger: #ff3e4e; --warning: #ffb302; --info: #2979ff;
+            --text-main: #ffffff; --text-muted: #888899; --border: 1px solid rgba(255,255,255,0.08);
+            --shadow-neon: 0 0 8px rgba(0, 243, 255, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scrollbar-width: thin; scrollbar-color: var(--primary) var(--bg-body); }
+        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; overflow: hidden; background-image: radial-gradient(circle at 10% 10%, #150c25 0%, #000000 90%); font-size: 11px; }
+        .hidden { display: none !important; }
+        
+        /* SEÇÕES TELA CHEIA */
+        .full-screen-section { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 5000; overflow-y: auto; display: none; flex-direction: column; }
+        .full-screen-section.active { display: flex; }
+
+        /* LANDING PAGE */
+        .lp-header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(5,5,5,0.9); backdrop-filter: blur(10px); position: sticky; top:0; z-index: 100; }
+        .lp-brand { font-family: 'Rajdhani'; font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 10px; }
+        .lp-brand span { color: var(--primary); }
+        .lp-hero { text-align: center; padding: 100px 20px; background: radial-gradient(circle at center, #1a0b2e 0%, #000 70%); }
+        .lp-hero h1 { 
+            font-family: 'Rajdhani'; font-size: 52px; line-height: 1.1; margin-bottom: 20px; 
+            background: linear-gradient(to right, #fff, #aaa); 
+            background-clip: text; -webkit-background-clip: text; 
+            color: transparent; -webkit-text-fill-color: transparent; 
+        }
+        .lp-plan-card:hover{ 
+    border-color: #ff7b00; /* Cor principal do neon (Ciano) */
+    
+    /* Camadas de sombra: externa próxima, externa expansiva e interna */
+    box-shadow: 0 0 10px #ff7b00, 
+                0 0 20px #ff7b00, 
+                inset 0 0 8px #ff7b00;
+        }
+        .lp-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        .lp-plan-card { background: var(--bg-card); border: var(--border); border-radius: 16px; padding: 30px; position: relative; transition: 0.3s; display: flex; flex-direction: column; }
+        .lp-plan-card:hover{ 
+    border-color: #ff7b00; /* Cor principal do neon (Ciano) */
+    
+    /* Camadas de sombra: externa próxima, externa expansiva e interna */
+    box-shadow: 0 0 10px #ff7b00, 
+                0 0 20px #ff7b00, 
+                inset 0 0 8px #ff7b00;
+        }
+       .lp-price { font-size: 42px; font-family: 'Rajdhani'; font-weight: 700; margin: 20px 0; }
+
+        /* CHECKOUT */
+        .chk-container { display: flex; height: 100vh; overflow: hidden; }
+        .chk-sidebar { width: 400px; background: #0b0b0b; border-right: var(--border); padding: 40px; display: flex; flex-direction: column; }
+        .chk-content { flex: 1; background: #050505; padding: 40px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
+        .chk-box { width: 100%; max-width: 550px; }
+        .chk-summary { background: #15151a; border-radius: 12px; padding: 20px; border: 1px solid #333; margin-bottom: 20px; }
+        .chk-total { display: flex; justify-content: space-between; align-items: center; font-size: 20px; font-weight: bold; color: var(--success); margin-top: 15px; padding-top: 15px; border-top: 1px dashed #333; }
+        .chk-step-title { font-size: 24px; font-family: 'Rajdhani'; margin-bottom: 5px; color: white; }
+        #paymentBrick_container { width: 100%; min-height: 300px; }
+
+        /* ADMIN & UTILS */
+        .sa-layout { display: flex; height: 100%; }
+        .sa-sidebar { width: 240px; background: #080808; border-right: var(--border); padding: 20px; display: flex; flex-direction: column; }
+        .sa-main { flex: 1; padding: 30px; overflow-y: auto; background: #0a0a0a; }
+        .sa-card { background: #111; border: var(--border); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .sa-table { width: 100%; border-collapse: collapse; }
+        .sa-table th { text-align: left; padding: 10px; background: #1a1a1a; color: #aaa; font-size: 10px; text-transform: uppercase; }
+        .sa-table td { padding: 10px; border-bottom: 1px solid #222; font-size: 12px; }
+        .sa-menu-item { padding: 12px; color: #888; cursor: pointer; border-radius: 6px; display: flex; gap: 10px; align-items: center; transition: 0.2s; font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+        .sa-menu-item:hover, .sa-menu-item.active { background: rgba(255, 255, 255, 0.05); color: white; border-left: 3px solid var(--primary); }
+        .input-lg { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; color: white; border-radius: 6px; margin-bottom: 15px; outline: none; font-size: 14px; }
+        .btn-lg { width: 100%; padding: 15px; background: var(--primary); color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; text-transform: uppercase; transition: 0.2s; }
+
+
+
+        /* ERP CORE STYLES */
+        #app-wrapper { display: flex; width: 100vw; height: 100vh; overflow: hidden; } 
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-box { background: var(--bg-card); border: 1px solid var(--primary); padding: 30px; border-radius: 12px; width: 350px; text-align: center; }
+        aside { width: 200px; background: var(--bg-sidebar); border-right: var(--border); display: flex; flex-direction: column; padding: 15px; z-index: 100; overflow-y: auto; }
+        .logo { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; color: white; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .logo span { color: var(--primary); text-shadow: var(--shadow-neon); }
+        .menu-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); margin: 15px 0 5px 0; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
+        .nav-btn { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 6px; color: var(--text-muted); cursor: pointer; transition: 0.2s; margin-bottom: 2px; font-weight: 500; font-size: 11px; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(0, 243, 255, 0.08); color: var(--primary); border-right: 3px solid var(--primary); }
+        main { flex: 1; padding: 15px; overflow-y: auto; position: relative; }
+        .view { display: none; animation: fadeIn 0.3s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .info-card { background: var(--bg-card); padding: 12px; border-radius: 6px; border: var(--border); }
+        .info-card h4 { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .info-card .val { font-size: 18px; font-weight: 700; font-family: 'Rajdhani'; color: #fff; }
+        .dash-row { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; height: 300px; margin-bottom: 15px; }
+        .chart-box { background: var(--bg-card); border: var(--border); border-radius: 8px; padding: 15px; position: relative; }
+        .recent-list { background: var(--bg-card); border: var(--border); border-radius: 8px; padding: 15px; overflow-y: auto; }
+        .recent-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 0; font-size: 11px; }
+        .input-icon-group { position: relative; margin-bottom: 8px; }
+        .input-icon-group label { display: block; color: var(--text-muted); font-size: 9px; text-transform: uppercase; margin-bottom: 2px; font-weight: 600; }
+        .input-icon-group input, .input-icon-group select, .input-icon-group textarea { width: 100%; background: var(--bg-input); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0 8px; border-radius: 4px; outline: none; font-size: 11px; height: 30px; }
+        .input-icon-group textarea { height: 60px; padding: 5px; }
+        .input-icon-group input:focus { border-color: var(--primary); }
+        .table-container { background: var(--bg-card); border-radius: 6px; border: var(--border); overflow: hidden; width: 100%; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 8px 10px; background: rgba(255,255,255,0.02); color: var(--text-muted); font-size: 10px; text-transform: uppercase; }
+        td { padding: 6px 10px; border-bottom: var(--border); font-size: 11px; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .grid-shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+        .prod-card { background: var(--bg-card); border-radius: 6px; border: var(--border); overflow: hidden; cursor: pointer; text-align: center; }
+        .prod-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .prod-img { width: 100%; height: 70px; object-fit: cover; background: #222; display: flex; align-items: center; justify-content: center; color: #555; }
+        .prod-info { padding: 5px; }
+        .prod-name { font-weight: 600; color: white; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prod-cat { font-size: 9px; text-transform: uppercase; color: var(--primary); }
+        .cart-container { background: rgba(0,0,0,0.3); border: 1px dashed #333; border-radius: 6px; padding: 5px; min-height: 150px; max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
+        .cart-item { background: var(--bg-input); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px; border-radius: 4px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+        .kanban-board { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; height: calc(100vh - 100px); }
+        .kanban-col { min-width: 210px; max-width: 210px; background: rgba(255,255,255,0.02); border-radius: 6px; padding: 8px; border: var(--border); display: flex; flex-direction: column; }
+        .kanban-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 700; font-family: 'Rajdhani'; text-transform: uppercase; color: var(--primary); font-size: 11px; }
+        .kanban-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+        .kanban-card { background: var(--bg-card); padding: 8px; border-radius: 4px; border: var(--border); transition: 0.2s; border-left: 3px solid var(--primary); font-size: 10px; position: relative; cursor: pointer; }
+        .kanban-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .kb-finance-tag { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: 700; }
+        .tag-debt { color: var(--danger); } .tag-paid { color: var(--success); }
+        .kb-tag { padding: 2px 5px; border-radius: 3px; font-weight: bold; font-size: 9px; }
+        .variation-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 5px; align-items: center; background: #1f1f25; padding: 5px; border-radius: 4px; margin-bottom: 4px; }
+        .upload-area { border: 1px dashed #444; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 30px; }
+        .btn-primary { background: var(--primary); color: #000; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-danger { background: rgba(255, 62, 78, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-btn-danger { background: rgba(255, 62, 78, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .btn-success { background: rgba(0, 224, 84, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .btn-sm { padding: 2px 8px; font-size: 10px; height: 24px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        #toast { position: fixed; bottom: 20px; right: 20px; background: #1a1a1a; border-left: 4px solid var(--success); padding: 10px 15px; border-radius: 4px; transform: translateX(150%); transition: 0.3s; z-index: 6000; color: white; font-weight: 700; font-size: 11px; }
+        #toast.show { transform: translateX(0); }
+        .tab-btn { opacity: 0.5; border-bottom: 2px solid transparent; border-radius: 0; padding-bottom: 5px; cursor: pointer; }
+        .tab-btn.active { opacity: 1; border-color: var(--primary); color: var(--primary); }
+        #pdf-overlay-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100000; display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding-top: 20px; }
+        #pdf-page { width: 210mm; min-height: 297mm; background: white; color: black; padding: 15mm; box-shadow: 0 0 20px rgba(0,0,0,0.5); font-family: 'Helvetica', 'Arial', sans-serif; position: relative; }
+        .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 20px; }
+        .pdf-logo img { max-height: 80px; max-width: 200px; }
+        .pdf-info { text-align: right; }
+        .pdf-title { font-size: 24px; font-weight: 700; color: #000; text-transform: uppercase; }
+        .pdf-client-box { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #ccc; }
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .pdf-table th { background: #000; color: #fff; padding: 8px; text-align: left; font-size: 12px; text-transform: uppercase; }
+        .pdf-table td { padding: 8px; border-bottom: 1px solid #ddd; font-size: 12px; color: #000; }
+        .pdf-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .pdf-total { text-align: right; font-size: 18px; font-weight: 700; margin-top: 10px; color: #000; }
+        .pdf-footer { margin-top: 50px; text-align: center; font-size: 10px; color: #666; border-top: 1px solid #ccc; padding-top: 10px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(2px); z-index: 6000; display: none; align-items: center; justify-content: center; }
+        .modal-box { background: var(--bg-card); width: 600px; max-width: 95%; max-height: 95vh; overflow-y: auto; border-radius: 8px; border: 1px solid var(--primary); padding: 20px; }
+    /* ============================================================
+   CORREÇÃO VISUAL: LANDING PAGE E CHECKOUT
+   ============================================================ */
+
+/* 1. CLASSE MAIS IMPORTANTE (Faz as telas trocarem) */
+.hidden { display: none !important; }
+
+/* 2. CONFIGURAÇÃO DAS TELAS CHEIAS (Landing Page, Login, Checkout) */
+.full-screen-section {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: #0f1015; /* Fundo Escuro Profissional */
+    color: #ffffff;
+    z-index: 9999; /* Fica acima do ERP original */
+    display: none; /* Começa escondido */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Quando a tela está ativa, ela aparece */
+.full-screen-section.active { display: flex; }
+
+/* 3. ESTILO DA LANDING PAGE */
+.lp-hero {
+    text-align: center;
+    width: 100%;       /* Ocupa a largura toda */
+    max-width: 1400px; /* Permite ficar bem largo em telas grandes */
+    margin: 0 auto;    /* Centraliza */
+    margin-bottom: 40px;
+    padding: 0 20px;   /* Evita colar nas bordas no celular */
+}
+.lp-hero h1 { font-size: 3rem; margin-bottom: 10px; color: #fff; }
+.lp-hero p { font-size: 1.2rem; color: #aaa; }
+
+.lp-plans-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.lp-plan-card {
+    background: #1a1b26;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 30px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.lp-plan-card:hover { transform: translateY(-5px); border-color: #00f3ff; }
+.lp-plan-card h3 { color: #00f3ff; margin-bottom: 15px; font-size: 1.5rem; }
+.lp-price { font-size: 2.5rem; font-weight: bold; margin-bottom: 20px; }
+.lp-price small { font-size: 1rem; color: #888; font-weight: normal; }
+
+/* 4. ESTILO DO CHECKOUT E LOGIN */
+.auth-box, .checkout-box {
+    background: #1e1e2e;
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border: 1px solid #333;
+}
+
+.checkout-steps { margin-bottom: 20px; }
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label { display: block; margin-bottom: 5px; color: #ccc; }
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+}
+.input-group input:focus { border-color: #00f3ff; outline: none; }
+
+/* 5. BOTÕES */
+.btn-lg {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #00f3ff, #0066ff);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 10px;
+}
+.btn-lg:hover { opacity: 0.9; }
+
+/* Botões de Ciclo (Mensal/Anual) */
+.cycle-selector { margin-bottom: 30px; }
+.cycle-selector button {
+    background: #333;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 20px;
+}
+.cycle-selector button.active { background: #00f3ff; color: #000; }
+/* --- ASSINATURA & PLANOS --- */
+.subs-header {
+    background: linear-gradient(90deg, #1a1a20 0%, #0d0d10 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+.subs-header::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 200px;
+    background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.05));
+    pointer-events: none;
+}
+
+/* Barras de Uso */
+.usage-item { margin-bottom: 15px; }
+.usage-info { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; color: #aaa; }
+.usage-track { width: 100%; height: 6px; background: #222; border-radius: 3px; overflow: hidden; }
+.usage-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 1s ease; }
+
+/* Grid de Planos */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.plan-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.plan-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1);
+}
+.plan-card.featured {
+    border-color: var(--primary);
+    background: linear-gradient(180deg, rgba(0, 243, 255, 0.05) 0%, rgba(0,0,0,0) 100%);
+}
+.plan-tag {
+    position: absolute;
+    top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--primary); color: #000;
+    font-size: 10px; font-weight: bold;
+    padding: 4px 12px; border-radius: 20px;
+    text-transform: uppercase;
+}
+.plan-price { font-size: 32px; font-weight: bold; color: white; margin: 15px 0; font-family: 'Rajdhani'; }
+.plan-price small { font-size: 14px; color: #666; font-weight: normal; }
+.plan-features { list-style: none; padding: 0; margin: 20px 0; flex: 1; }
+.plan-features li { font-size: 12px; color: #ccc; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.plan-features li i { color: var(--success); }
+
+/* Modal Checkout */
+.checkout-box {
+    background: #fff; /* Fundo branco para parecer gateway de pagto */
+    color: #333;
+    width: 450px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.checkout-header { background: #f4f4f4; padding: 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+.checkout-body { padding: 30px; }
+.cc-input {
+    width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 15px; font-size: 14px;
+}
+/* =========================================
+   CORREÇÃO DO SELECT (FILTRO DO DASHBOARD)
+   ========================================= */
+
+/* Garante que o texto do select selecionado seja branco */
+#dash-period {
+    color: white !important;
+    background-color: transparent; /* Ou a cor de fundo que preferir */
+}
+
+/* Pinta o fundo das opções de cinza escuro para não ficar branco no branco */
+#dash-period option {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 10px;
+}
+
+/* Regra Global: Aplica em todos os selects do sistema para evitar esse erro em outros lugares */
+select option {
+    background-color: #1a1a1a;
+    color: white;
+}
+/* =========================================
+   ALERTA DE CONTAS (PISCA-PISCA)
+   ========================================= */
+@keyframes blink-alert {
+    0% { border-color: #ff7675; box-shadow: 0 0 0 transparent; }
+    50% { border-color: #ffeaa7; box-shadow: 0 0 20px #ffeaa7; transform: scale(1.02); }
+    100% { border-color: #ff7675; box-shadow: 0 0 0 transparent; }
+}
+
+.blink-warning {
+    animation: blink-alert 1.5s infinite ease-in-out;
+    border: 2px solid #ffeaa7 !important; /* Força a borda amarela */
+}
+/* --- STORE BUILDER (EDITOR DA LOJA) --- */
+.store-preview-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #333;
+    background: #000;
+    cursor: pointer;
+}
+.store-preview-card:hover .edit-overlay { opacity: 1; }
+
+.edit-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; transition: 0.3s;
+}
+.edit-btn-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: white; color: black;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Color Picker Customizado */
+input[type="color"] {
+    appearance: none; border: none; width: 40px; height: 40px; 
+    border-radius: 50%; overflow: hidden; padding: 0; margin: 0; cursor: pointer;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch { border: none; }
+
+    /* ESTILO PREMIUM PARA ASSINATURA */
+    .sub-hero {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(0,0,0,0) 100%);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        border-radius: 16px;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+    
+    .sub-hero::before {
+        content: ''; position: absolute; top: -50px; right: -50px;
+        width: 150px; height: 150px; background: var(--primary);
+        filter: blur(80px); opacity: 0.3; pointer-events: none;
+    }
+
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+
+    .plan-card {
+        background: #141416; border: 1px solid #333; border-radius: 16px;
+        padding: 30px; display: flex; flex-direction: column; position: relative;
+        transition: 0.3s;
+    }
+
+    .plan-card.pro {
+        border: 1px solid var(--primary);
+        background: linear-gradient(180deg, rgba(20, 20, 22, 1) 0%, rgba(124, 58, 237, 0.05) 100%);
+        box-shadow: 0 0 30px rgba(124, 58, 237, 0.1);
+    }
+    
+    .plan-card:hover { transform: translateY(-5px); }
+    .plan-card.pro:hover { box-shadow: 0 0 40px rgba(124, 58, 237, 0.2); border-color: #a78bfa; }
+
+    .plan-price { font-family: 'Rajdhani', sans-serif; font-size: 42px; font-weight: 700; color: white; margin: 10px 0; }
+    .plan-price small { font-size: 14px; color: #888; font-weight: 400; }
+
+    .feature-list { list-style: none; padding: 0; margin: 20px 0; flex: 1; }
+    .feature-list li { margin-bottom: 12px; color: #ccc; font-size: 14px; display: flex; gap: 10px; align-items: center; }
+    .feature-list li i { color: var(--success); }
+    
+    .badge-current {
+        background: rgba(255,255,255,0.1); color: white; padding: 5px 12px; 
+        border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* Barra de Progresso Neon */
+    .limit-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 15px; }
+    .limit-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: 0%; transition: width 1s ease; border-radius: 10px; }
+/* ========================================= */
+/* 📱 MODO MOBILE (Telas menores que 768px) */
+/* ========================================= */
+@media (max-width: 768px) {
+
+    /* 1. Ajuste Geral */
+    body {
+        overflow-x: hidden; /* Evita rolagem lateral indesejada */
+    }
+
+    /* 2. Sidebar (Menu Lateral) - Esconde por padrão */
+    #sidebar {
+        position: fixed;
+        left: -100%; /* Joga para fora da tela */
+        top: 0;
+        height: 100vh;
+        width: 80%; /* Ocupa 80% da tela */
+        z-index: 9999;
+        transition: 0.3s;
+        box-shadow: 10px 0 20px rgba(0,0,0,0.5);
+    }
+
+    #sidebar.mobile-active {
+        left: 0; /* Traz de volta quando clica */
+    }
+
+    /* 3. Conteúdo Principal - Ocupa tudo */
+    #main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px;
+    }
+
+    /* 4. Grids (Transforma tudo em 1 coluna) */
+    .grid-2, .grid-3, .grid-4, .dashboard-grid, 
+    .lp-plans-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+    /* 5. Tabelas (Permite rolar para o lado com o dedo) */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    table {
+        min-width: 600px; /* Força a tabela a ter tamanho para rolar */
+    }
+
+    /* 6. Modais (Janelas Pop-up) */
+    .modal-box, .checkout-box {
+        width: 95% !important; /* Ocupa a tela toda */
+        margin: 10px auto;
+        max-height: 90vh;
+        overflow-y: auto; /* Barra de rolagem interna se for muito grande */
+    }
+
+    /* 7. Landing Page Cards */
+    .lp-plan-card {
+        min-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* 8. Botão do Menu (Hambúrguer) - Aparece só no celular */
+    #mobile-menu-btn {
+        display: block !important;
+    }
+
+    /* 9. Ajuste de Fontes */
+    h1 { font-size: 24px !important; }
+    h2 { font-size: 20px !important; }
+    .val { font-size: 28px !important; } /* Números do dashboard */
+    
+    /* 10. PDV (Vendas) */
+    #view-loja > div {
+        flex-direction: column; /* Coloca vitrine em cima e carrinho embaixo */
+    }
+    #vitrine {
+        max-height: 300px; /* Limita altura da vitrine no celular */
+    }
+}
+/* ========================================= */
+/* 🚀 LANDING PAGE MAGNÍFICA (NOVO CSS) */
+/* ========================================= */
+
+/* Navegação */
+.lp-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 40px; position: absolute; top: 0; width: 100%; z-index: 10;
+}
+.lp-brand { font-size: 24px; font-weight: 800; color: white; letter-spacing: -1px; }
+.lp-brand span { color: var(--primary); }
+
+/* Hero Section */
+.lp-hero-section {
+    min-height: 90vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 100px 20px; position: relative; overflow: hidden;
+}
+.lp-hero-content { z-index: 2; max-width: 800px; }
+
+.lp-badge {
+    background: rgba(124, 58, 237, 0.1); color: var(--primary);
+    border: 1px solid rgba(124, 58, 237, 0.3); padding: 5px 15px;
+    border-radius: 50px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 20px; display: inline-block;
+}
+
+.lp-hero-section h1 {
+    font-size: 60px; line-height: 1.1; margin-bottom: 20px; color: white;
+    font-family: 'Rajdhani', sans-serif;
+}
+.text-gradient {
+    background: linear-gradient(90deg, #fff, #a78bfa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.lp-hero-section p { font-size: 18px; color: #a1a1aa; margin-bottom: 40px; }
+
+.lp-hero-btns { display: flex; gap: 15px; justify-content: center; margin-bottom: 60px; }
+.btn-lg { padding: 15px 30px; font-size: 16px; border-radius: 50px; }
+.btn-glow { box-shadow: 0 0 20px rgba(124, 58, 237, 0.5); }
+
+/* Glow Effect Background */
+.lp-glow-effect {
+    position: absolute; width: 600px; height: 600px; background: var(--primary);
+    filter: blur(150px); opacity: 0.15; border-radius: 50%; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); z-index: 1; pointer-events: none;
+}
+
+/* Stats */
+.lp-stats {
+    display: flex; justify-content: center; gap: 50px; border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 30px;
+}
+.stat-item b { display: block; font-size: 24px; color: white; }
+.stat-item small { color: #666; font-size: 12px; text-transform: uppercase; }
+
+/* Features */
+.lp-features {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; padding: 50px 10%; background: #0f0f11;
+}
+.feature-card {
+    background: rgba(255,255,255,0.02); padding: 30px; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+}
+.feature-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.04); }
+.f-icon {
+    width: 50px; height: 50px; background: rgba(124, 58, 237, 0.1); color: var(--primary);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 20px;
+}
+.feature-card h3 { color: white; margin-bottom: 10px; font-family: 'Rajdhani'; }
+.feature-card p { color: #888; font-size: 14px; line-height: 1.6; }
+
+/* Plans Section */
+.lp-plans-section { padding: 80px 20px; text-align: center; }
+.section-header h2 { font-size: 40px; color: white; margin-bottom: 10px; font-family: 'Rajdhani'; }
+.section-header p { color: #888; margin-bottom: 30px; }
+
+.cycle-toggle {
+    background: #18181b; padding: 5px; border-radius: 30px; display: inline-flex;
+    margin-bottom: 50px; border: 1px solid #333;
+}
+.toggle-btn {
+    padding: 10px 25px; border-radius: 25px; background: transparent; color: #888;
+    border: none; cursor: pointer; font-weight: 600; transition: 0.3s;
+}
+.toggle-btn.active { background: var(--primary); color: white; }
+/* FORÇA O BOTÃO DO PLANO A SER CLICÁVEL */
+.lp-plan-card button {
+    position: relative;
+    z-index: 100 !important; /* Fica na frente de tudo */
+    cursor: pointer !important;
+    pointer-events: auto !important; /* Garante que aceita clique */
+}
+
+/* Garante que o container não seja coberto pelo Hero */
+.lp-plans-section {
+    position: relative;
+    z-index: 10;
+}
+/* --- CORREÇÃO DE LAYOUT DESKTOP (FORÇA BRUTA) --- */
+
+/* 1. O Container Principal TEM que ser Flex */
+#app-wrapper {
+    display: flex !important; /* Obriga a ficar lado a lado */
+    flex-direction: row !important; /* Direção horizontal */
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow: hidden !important; /* Impede rolagem dupla */
+    background-color: #000;
+}
+
+/* 2. O Menu Lateral */
+#sidebar {
+    width: 260px !important; /* Largura fixa */
+    min-width: 260px !important;
+    height: 100% !important;
+    overflow-y: auto;
+    border-right: 1px solid #333;
+    background: #111;
+    display: flex !important;
+    flex-direction: column;
+    z-index: 100;
+}
+
+/* 3. O Conteúdo Principal */
+#main-content {
+    flex: 1 !important; /* Ocupa todo o espaço que sobra */
+    width: calc(100% - 260px) !important; /* Garante o tamanho */
+    height: 100% !important;
+    overflow-y: auto !important; /* Rolagem interna */
+    padding: 20px;
+    position: relative;
+    background-color: #000;
+}
+
+/* 4. Ajuste para Telas Pequenas (Celular) */
+@media (max-width: 768px) {
+    #app-wrapper {
+        flex-direction: column !important; /* No celular fica um em cima do outro */
+    }
+    
+    #sidebar {
+        position: fixed;
+        left: -100%; /* Esconde o menu */
+        top: 0;
+        bottom: 0;
+        transition: 0.3s;
+        width: 80% !important;
+    }
+
+    #sidebar.mobile-active {
+        left: 0 !important; /* Mostra o menu quando ativo */
+    }
+
+    #main-content {
+        width: 100% !important;
+        padding: 15px;
+    }
+}
+
+/* 5. Correção das "Views" (Telas) */
+.view-section, .view {
+    width: 100%;
+    max-width: 1200px; /* Impede que fique largo demais em telas gigantes */
+    margin: 0 auto;
+    display: none; /* JS controla quem aparece */
+}
+
+.view-section.active, .view.active {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* --- CORREÇÃO VISUAL DA LANDING PAGE (TELA DE PLANOS) --- */
+
+/* 1. Garante que a seção ocupe a largura toda */
+.lp-hero-section, 
+.lp-plans-section {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Expande o conteúdo do texto */
+.lp-hero-content {
+    width: 100%;
+    max-width: 1200px; /* Deixa largo, mas centralizado */
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* 3. Arruma a GRID dos planos (O mais importante) */
+.lp-plans-grid {
+    display: flex !important;
+    flex-wrap: wrap !important; /* Permite quebrar linha se não couber */
+    justify-content: center !important; /* Centraliza os cards */
+    gap: 30px; /* Espaço entre eles */
+    width: 100%;
+    max-width: 1200px; /* Limite para telas gigantes */
+    margin-top: 40px;
+}
+
+/* 4. Arruma o CARD individual do plano */
+.lp-plan-card {
+    flex: 1; /* Faz todos terem o mesmo tamanho */
+    min-width: 300px; /* Tamanho mínimo para não ficar "tripa" */
+    max-width: 380px; /* Tamanho máximo para não ficar gigante */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 5. Ajuste para Celular (Ficar um embaixo do outro) */
+@media (max-width: 768px) {
+    .lp-plans-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .lp-plan-card {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+/* --- MODAL PANORÂMICO (SEM SCROLL) --- */
+
+#checkout-flow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.chk-modal-card {
+    background-color: #0f0f10;
+    width: 100%;
+    max-width: 850px; /* BEM LARGO para caber tudo */
+    border: 1px solid #333;
+    border-radius: 12px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    padding: 30px;
+    position: relative;
+    /* Removemos overflow-y auto para evitar scroll, a menos que a tela seja minúscula */
+}
+
+/* Header Compacto */
+.chk-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* GRIDS INTELIGENTES (Para colocar 3 ou 4 coisas na mesma linha) */
+.row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.row-address {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px; /* CEP pequeno, Rua grande, Num pequeno */
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Inputs Compactos */
+.form-group { margin-bottom: 0; position: relative; } /* Tira margem do grupo, controla no grid */
+
+.form-label {
+    display: block;
+    color: #888;
+    font-size: 11px; /* Fonte menor */
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    height: 42px; /* Altura compacta (Padrão Desktop) */
+    padding: 0 12px;
+    background-color: #18181b;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-input:focus { border-color: #00f3ff; background-color: #222; }
+.form-input[readonly] { background-color: #111; color: #555; }
+
+/* Área de Endereço sutil */
+.address-area {
+    border-top: 1px dashed #333;
+    padding-top: 15px;
+    margin-top: 5px;
+}
+
+/* Botões no final */
+.chk-footer {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid #222;
+    padding-top: 20px;
+}
+
+/* Responsivo para celular (Aí sim rola) */
+@media (max-width: 768px) {
+    .chk-modal-card { overflow-y: auto; max-height: 95vh; }
+    .row-3, .row-address, .row-2 { grid-template-columns: 1fr; gap: 10px; }
+}
+/* Estilo do Switch (Botão de Ligar/Desligar) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  transform: translateX(20px);
+}

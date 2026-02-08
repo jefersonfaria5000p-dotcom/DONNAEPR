@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donna - Super Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Animação de carregamento */
+        .loader { border-top-color: #3498db; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+    <style>
+    /* Animação de carregamento */
+    .loader { border-top-color: #3498db; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
+    @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* --- ADICIONE ISTO PARA CORRIGIR O VISUAL "ESPREMIDO" --- */
+    body {
+        min-width: 1200px; /* Força o site a ter largura de monitor grande */
+        overflow-x: auto;  /* Permite rolar para o lado se a tela for pequena */
+    }
+    
+    /* Aumenta um pouco os inputs para ficarem mais confortáveis */
+    input, select, textarea {
+        font-size: 14px !important; 
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <div class="w-64 bg-gray-900 text-white flex flex-col">
+            <div class="p-6 text-2xl font-bold text-center border-b border-gray-700">
+                DONNA <span class="text-blue-400">ADMIN</span>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#" onclick="showSection('dashboard')" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 bg-gray-800 text-white">
+                    <i class="fas fa-users mr-2"></i> Usuários & Pagamentos
+                </a>
+                <a href="#" onclick="showSection('plans')" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+                    <i class="fas fa-tags mr-2"></i> Gerenciar Planos
+                </a>
+                <a href="#" onclick="showSection('users-manage')" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+    <i class="fas fa-user-cog mr-2"></i> Gerenciar Usuários
+</a>
+<a href="#" onclick="showSection('config')" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 text-gray-400 hover:text-white">
+    <i class="fas fa-cogs mr-2"></i> Configurações
+</a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <button onclick="logout()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">
+                    Sair
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <header class="flex justify-between items-center py-4 px-6 bg-white border-b shadow-sm">
+                <h2 class="text-2xl font-semibold text-gray-800" id="page-title">Visão Geral</h2>
+                <div class="flex items-center">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </span>
+                        <input id="searchInput" type="text" class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" placeholder="Buscar email...">
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                
+                <div id="loading" class="flex justify-center items-center h-full">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                </div>
+                <div id="config-section" class="hidden space-y-6">
+    <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">
+            <i class="fas fa-tools text-gray-600"></i> Dados do Sistema
+        </h3>
+        <p class="text-sm text-gray-500 mb-6">Estes dados aparecem na tela de bloqueio e no suporte dos clientes.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">WhatsApp de Suporte</label>
+                <input type="text" id="cfg_support_phone" class="w-full border border-gray-300 rounded p-2" placeholder="554199999999">
+                <p class="text-xs text-gray-400 mt-1">Use formato internacional (ex: 5541...)</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Email de Contato</label>
+                <input type="email" id="cfg_admin_email" class="w-full border border-gray-300 rounded p-2">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Chave Pix (Para Cobrança)</label>
+                <input type="text" id="cfg_pix_key" class="w-full border border-gray-300 rounded p-2">
+            </div>
+
+            <div class="flex items-center gap-3 bg-red-50 p-3 rounded border border-red-100">
+                <input type="checkbox" id="cfg_maintenance" class="w-5 h-5 text-red-600">
+                <label for="cfg_maintenance" class="text-sm font-bold text-red-700 cursor-pointer">
+                    Ativar Modo Manutenção (Bloqueia Todos)
+                </label>
+            </div>
+
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <button onclick="saveConfig()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">
+                <i class="fas fa-save"></i> SALVAR CONFIGURAÇÕES
+            </button>
+        </div>
+    </div>
+</div>
+
+           <div id="dashboard-section" class="content-section active space-y-6">
+    <div class="flex justify-between items-center mb-2">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">Painel de Controle</h2>
+            <p class="text-sm text-gray-500">Visão em tempo real do seu ecossistema.</p>
+        </div>
+        <button onclick="loadDashboardMetrics()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-lg shadow-sm font-bold flex items-center gap-2 transition">
+            <i class="fas fa-sync-alt"></i> Atualizar
+        </button>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        
+        <div class="bg-white p-5 rounded-xl shadow border border-gray-100 relative overflow-hidden group">
+            <div class="absolute right-0 top-0 h-full w-1 bg-purple-500"></div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">MRR Estimado</p>
+                    <h3 class="text-2xl font-black text-gray-800 mt-1" id="kpi-mrr">R$ 0,00</h3>
+                </div>
+                <div class="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition">
+                    <i class="fas fa-crown"></i>
+                </div>
+            </div>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="text-gray-400">Baseado em assinaturas ativas</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow border border-gray-100 relative overflow-hidden group">
+            <div class="absolute right-0 top-0 h-full w-1 bg-green-500"></div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">GMV (30 Dias)</p>
+                    <h3 class="text-2xl font-black text-gray-800 mt-1" id="kpi-gmv">R$ 0,00</h3>
+                </div>
+                <div class="p-2 bg-green-50 rounded-lg text-green-600 group-hover:bg-green-600 group-hover:text-white transition">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="text-gray-400">Total transacionado pelas lojas</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow border border-gray-100 relative overflow-hidden group">
+            <div class="absolute right-0 top-0 h-full w-1 bg-blue-500"></div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Base de Lojas</p>
+                    <h3 class="text-2xl font-black text-gray-800 mt-1" id="kpi-total-lojas">0</h3>
+                </div>
+                <div class="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition">
+                    <i class="fas fa-store"></i>
+                </div>
+            </div>
+            <div class="mt-3 flex items-center text-xs gap-2">
+                <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold" id="badge-novas-lojas">+0</span>
+                <span class="text-gray-400">novas este mês</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow border border-gray-100 relative overflow-hidden group">
+            <div class="absolute right-0 top-0 h-full w-1 bg-indigo-500"></div>
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Lojas Ativas</p>
+                    <h3 class="text-2xl font-black text-gray-800 mt-1" id="kpi-lojas-ativas">0</h3>
+                </div>
+                <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="text-gray-400" id="taxa-atividade">0% da base total</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="bg-white p-6 rounded-xl shadow lg:col-span-2">
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-gray-700 text-sm uppercase"><i class="fas fa-chart-bar text-blue-500 mr-2"></i> Volume de Vendas (Últimos 30 Dias)</h4>
+            </div>
+            <div class="h-72 w-full">
+                <canvas id="chartVendas"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow">
+            <h4 class="font-bold text-gray-700 mb-4 text-sm uppercase"><i class="fas fa-chart-pie text-purple-500 mr-2"></i> Planos Ativos</h4>
+            <div class="h-64 flex items-center justify-center">
+                <canvas id="chartPlanos"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <div class="bg-white rounded-xl shadow p-6">
+            <h5 class="font-bold text-gray-800 mb-4 border-b pb-2 flex justify-between items-center">
+                <span>🏆 Top 5 Lojas (Faturamento)</span>
+                <span class="text-xs font-normal text-gray-500">Mês Atual</span>
+            </h5>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <tbody id="top-stores-list" class="text-sm divide-y divide-gray-100">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-6">
+            <h5 class="font-bold text-gray-800 mb-4 border-b pb-2 flex justify-between items-center">
+                <span>🆕 Últimos Cadastros</span>
+                <a href="#" onclick="showSection('users-manage')" class="text-xs text-blue-600 hover:underline">Ver todos</a>
+            </h5>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <tbody id="recent-users-list" class="text-sm divide-y divide-gray-100">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+                <div id="plans-section" class="hidden space-y-6">
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
+                            <i class="fas fa-plus-circle text-blue-500"></i> Configurar Plano
+                        </h3>
+                        
+                        <form onsubmit="createPlan(event)" class="space-y-4">
+                            <div class="form-group mb-3"> <label style="color:white">Código do Plano (ID)</label>
+    <input type="text" id="p_plan_id" placeholder="Ex: pro" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+    <small style="color:#888">Use apenas letras minúsculas, sem espaços.</small>
+</div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Nome do Plano</label>
+                                <input type="text" id="p_name" placeholder="Ex: Donna Pro" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Preço</label>
+                                    <input type="text" id="p_price" placeholder="49.90" class="w-full border border-gray-300 rounded-lg p-2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Limite Pedidos</label>
+                                    <input type="number" id="p_limit" placeholder="Ex: 50" class="w-full border-2 border-purple-500 rounded-lg p-2 font-bold text-gray-700">
+                                    <p class="text-xs text-gray-500">Deixe 999999 para Ilimitado</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Período</label>
+                                    <input type="text" id="p_period" value="/mês" class="w-full border border-gray-300 rounded-lg p-2">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">ID do Stripe (Price ID)</label>
+                                <input type="text" id="p_stripe_id" placeholder="price_..." class="w-full border border-gray-300 rounded-lg p-2 font-mono text-xs text-blue-600 bg-blue-50">
+                            </div>
+
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                <input type="checkbox" id="p_rec" class="w-5 h-5 text-blue-600 rounded">
+                                <label for="p_rec" class="text-sm font-bold text-gray-700 cursor-pointer">Marcar como "Recomendado"</label>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">
+                                    Benefícios <span class="text-gray-400 font-normal text-xs">(Um por linha)</span>
+                                </label>
+                                <textarea id="p_features" rows="5" placeholder="Acesso Ilimitado&#10;Suporte VIP" class="w-full border border-gray-300 rounded-lg p-2 text-sm"></textarea>
+                            </div>
+
+                            <div class="pt-2">
+                                <button type="submit" id="form-plan-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow transition-all uppercase tracking-wide">
+                                    Salvar Plano
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-white shadow rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">Planos Ativos</h3>
+                        <div id="plans-list" class="space-y-4">
+                            <p class="text-gray-500 text-center">Carregando...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="users-manage-section" class="hidden space-y-6">
+                    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+                        <div class="p-6 flex justify-between items-center bg-gray-50 border-b">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">Base de Clientes</h3>
+                                <p class="text-sm text-gray-500">Gerencie acessos, limites e veja quem está ativo.</p>
+                            </div>
+                            <button onclick="loadManageUsers()" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg shadow-sm font-medium transition flex items-center gap-2">
+                                <i class="fas fa-sync-alt"></i> Atualizar Lista
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 uppercase text-xs font-bold tracking-wider">
+                                        <th class="py-4 px-6">Cliente / Empresa</th>
+                                        <th class="py-4 px-6">Plano & Consumo</th>
+                                        <th class="py-4 px-6 text-center">Status</th>
+                                        <th class="py-4 px-6 text-center">Criado em</th>
+                                        <th class="py-4 px-6 text-right">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="manage-users-list" class="text-gray-700 text-sm divide-y divide-gray-100">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main> </div>
+    </div>
+
+    <div id="paymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-900">Histórico Financeiro</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            <div id="modal-content" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="userEditModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
+        
+        <div class="bg-gray-800 px-6 py-4 flex justify-between items-center shrink-0">
+            <div>
+                <h3 class="text-xl font-bold text-white flex items-center gap-2" id="modal-user-title">
+                    <i class="fas fa-user-cog"></i> Gerenciar Usuário
+                </h3>
+                <p class="text-xs text-gray-400" id="modal-user-id">ID: ...</p>
+            </div>
+            <button onclick="closeEditModal()" class="text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto custom-scrollbar space-y-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="space-y-4">
+                    <h4 class="font-bold text-gray-800 border-b pb-2 text-sm uppercase tracking-wide">
+                        <i class="fas fa-id-card text-blue-500 mr-1"></i> Dados Cadastrais
+                    </h4>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Nome da Empresa</label>
+                        <input id="edit-company-name" class="w-full border border-gray-300 rounded p-2 focus:border-blue-500 outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Email (Login)</label>
+                        <input id="edit-email" readonly class="w-full border border-gray-200 bg-gray-100 rounded p-2 text-gray-500 cursor-not-allowed">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Documento</label>
+                            <input id="edit-doc" class="w-full border border-gray-300 rounded p-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Telefone</label>
+                            <input id="edit-phone" class="w-full border border-gray-300 rounded p-2 text-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="font-bold text-gray-800 border-b pb-2 text-sm uppercase tracking-wide">
+                        <i class="fas fa-crown text-yellow-500 mr-1"></i> Plano & Acesso
+                    </h4>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Tipo de Plano</label>
+                        <select id="edit-plan-type" class="w-full border border-gray-300 rounded p-2 text-sm bg-white font-medium">
+    </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Status da Assinatura</label>
+                        <select id="edit-plan-status" class="w-full border border-gray-300 rounded p-2 font-bold text-sm">
+                            <option value="active" class="text-green-600">🟢 ATIVO</option>
+                            <option value="overdue" class="text-yellow-600">🟠 ATRASADO / PENDENTE</option>
+                            <option value="suspended" class="text-red-600">🔴 SUSPENSO</option>
+                            <option value="cancelled" class="text-gray-600">⚫ CANCELADO</option>
+                        </select>
+                    </div>
+                    <div class="mt-3">
+    <label class="block text-xs font-bold text-gray-500 uppercase">Vencimento do Plano</label>
+    <div class="flex gap-2">
+        <input type="date" id="edit-period-end" class="w-full border border-gray-300 rounded p-2 text-sm font-bold text-gray-700">
+        
+        <button type="button" onclick="add30Days()" class="bg-blue-100 text-blue-600 px-3 rounded hover:bg-blue-200 text-xs font-bold" title="Dar 30 dias de benefício">
+            +30d
+        </button>
+    </div>
+    <p class="text-[10px] text-gray-400 mt-1">Se passar desta data, o sistema bloqueia.</p>
+</div>
+
+                    <div class="bg-blue-50 p-3 rounded border border-blue-100">
+                        <label class="block text-xs font-bold text-blue-800 uppercase mb-1">Limite Personalizado</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="edit-custom-limit" class="w-full border border-blue-300 rounded p-1 text-center font-bold text-blue-700" placeholder="0">
+                        </div>
+                        <span class="text-xs text-blue-600 block mt-1 text-center">Deixe 0 para usar o padrão do plano</span>
+                    </div>
+                    
+                    <a href="#" id="btn-whatsapp" target="_blank" class="flex items-center justify-center gap-2 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded shadow transition text-sm">
+                        <i class="fab fa-whatsapp"></i> Conversar no WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <h4 class="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wide flex items-center">
+                    <i class="fas fa-lock text-gray-600 mr-2"></i> Alterar Senha
+                </h4>
+                <div class="flex gap-2 items-end">
+                    <div class="flex-1">
+                        <label class="block text-xs text-gray-500 mb-1">Nova Senha</label>
+                        <input type="text" id="new_password" placeholder="Digite a nova senha..." class="w-full border border-gray-300 rounded p-2 text-sm">
+                    </div>
+                    <button onclick="adminChangePassword()" class="bg-gray-700 hover:bg-gray-900 text-white px-4 py-2 rounded text-sm font-bold transition">
+                        <i class="fas fa-key"></i> Atualizar Senha
+                    </button>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">O usuário será desconectado e terá que usar essa nova senha.</p>
+            </div>
+
+            <div class="border border-red-200 rounded-lg p-4 bg-red-50">
+                <h4 class="font-bold text-red-700 mb-2 text-sm uppercase tracking-wide flex items-center">
+                    <i class="fas fa-exclamation-triangle mr-2"></i> Zona de Perigo
+                </h4>
+                <div class="flex justify-between items-center">
+                    <p class="text-xs text-red-600">
+                        Essa ação apagará permanentemente o usuário, seus produtos e vendas.<br>
+                        <b>Não há como desfazer.</b>
+                    </p>
+                    <button onclick="adminDeleteUser()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-bold shadow hover:shadow-lg transition">
+                        <i class="fas fa-trash-alt"></i> EXCLUIR USUÁRIO
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bg-gray-100 px-6 py-4 flex justify-end gap-3 border-t shrink-0">
+            <button onclick="closeEditModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-200 rounded font-medium transition">Cancelar</button>
+            <button onclick="saveUserChanges()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold shadow-lg transform hover:-translate-y-0.5 transition">
+                <i class="fas fa-save mr-2"></i> SALVAR DADOS
+            </button>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="edit-user-id">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="js/super-admin.js"></script>
+    
+</body>
+</html>

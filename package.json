@@ -1,0 +1,9 @@
+{
+  "tipo" : "módulo" , 
+  "dependências" : { 
+    "@supabase/supabase-js" : "^2.95.3" , 
+    "próximo" : "..." , 
+    "reagir" : "..." , 
+    "listra" : "^14.xx" 
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "donna-erp-saas",
+  "version": "91.0.0",
+  "description": "Sistema ERP SaaS com Pagamento Mercado Pago",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.93.3",
+    "express": "^4.18.2",
+    "mercadopago": "^2.12.0",
+    "stripe": "^20.3.0"
+  }
+}
